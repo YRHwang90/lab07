@@ -10,6 +10,7 @@ output: github_document
 ```{r load-packages, message = FALSE}
 library(tidyverse) 
 library(skimr)
+library(stringr)
 ```
 
 ```{r load-data, message = FALSE, eval = FALSE}
@@ -23,18 +24,59 @@ uoe_art <- read_csv("data/uoe-art.csv")
 uoe_art <- uoe_art %>%
   separate(title, into = c("title", "date"), sep = "\\(") %>%
   mutate(year = str_remove(date, "\\)") %>% as.numeric()) %>%
-  select(title, artist, year, ___)
+  select(title, artist, year, link)
 ```
 
-### Exercise 10
-
-Remove this text, and add your answer for Exercise 10 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
-
 ### Exercise 11
+```{r}
+skim(uoe_art)
+sum(is.na(uoe_art$artist))
+sum(is.na(uoe_art$title))
+sum(is.na(uoe_art$year))
+sum(is.na(uoe_art$link))
+```
+### Exercise 11,12
 
-...
+```{r}
 
-Add exercise headings as needed.
+ggplot(data = uoe_art, aes(x = year)) +
+  geom_histogram(bandwith=2)
+
+#table(uoe_art$year)
+#uoe_art$year<-ifelse(uoe_art$year==2,NA,uoe_art$year)
+
+```
+
+## ex 13, 14 15
+
+```{r}
+uoe_art %>%
+  filter(year==2)%>%
+  View()
+
+uoe_art %>%
+  filter(year==2)%>%
+  View()
+
+
+uoe_art$year<-ifelse(uoe_art$year==2,1964,uoe_art$year)
+
+uoe_art$title[uoe_art$title=="Death Mask"] <- "Death Mask (2)"
+
+
+
+ggplot(data = uoe_art, aes(x = year)) +
+  geom_histogram(bandwith=2)
+
+
+
+uoe_art %>%
+  count(artist) %>%
+  arrange(desc(n))
+
+uoe_art %>% 
+  filter(str_detect(title, fixed('child', ignore_case = TRUE))) 
+
+    
+```
+
