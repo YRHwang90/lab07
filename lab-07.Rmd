@@ -11,9 +11,11 @@ output: github_document
 library(tidyverse) 
 library(skimr)
 library(stringr)
+library(robotstxt)
 ```
 
-```{r load-data, message = FALSE, eval = FALSE}
+
+```{r load-data, message = FALSE}
 # Remove eval = FALSE or set it to TRUE once data is ready to be loaded
 uoe_art <- read_csv("data/uoe-art.csv")
 ```
@@ -28,7 +30,8 @@ uoe_art <- uoe_art %>%
 ```
 
 ### Exercise 11
-```{r}
+```{r, error=FALSE}
+
 skim(uoe_art)
 sum(is.na(uoe_art$artist))
 sum(is.na(uoe_art$title))
@@ -39,11 +42,15 @@ sum(is.na(uoe_art$link))
 
 ```{r}
 
-ggplot(data = uoe_art, aes(x = year)) +
-  geom_histogram(bandwith=2)
+summary(uoe_art$year)
+## some weird thing is in there (2), but let's skip it 
 
-#table(uoe_art$year)
-#uoe_art$year<-ifelse(uoe_art$year==2,NA,uoe_art$year)
+
+
+ggplot(data = uoe_art, aes(x = year)) +
+  geom_histogram()+
+  coord_cartesian(xlim = c(1700, 2030))
+  
 
 ```
 
@@ -66,7 +73,7 @@ uoe_art$title[uoe_art$title=="Death Mask"] <- "Death Mask (2)"
 
 
 ggplot(data = uoe_art, aes(x = year)) +
-  geom_histogram(bandwith=2)
+  geom_histogram()
 
 
 
